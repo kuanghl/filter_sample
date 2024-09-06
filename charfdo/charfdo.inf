@@ -1,0 +1,88 @@
+;
+; charfdo.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=WDFBOOK ; TODO: specify appropriate Class
+ClassGuid={1a4bf366-8b9e-4f2b-b60b-753c975e11a2} ; TODO: specify appropriate ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=charfdo.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+PnpLockdown=1
+
+; ============= Copyfiles ==========================
+
+[DestinationDirs]
+DefaultDestDir = 12
+charfdo_Device_CoInstaller_CopyFiles = 11
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+charfdo.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+; ================= Class section =====================
+[ClassInstall32]
+Addreg=SampleClassReg     
+
+[SampleClassReg]
+HKR,,,0,%DeviceClassName%
+HKR,,Icon,,-18
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%charfdo.DeviceDesc%=charfdo_Device, Root\charfdo ; TODO: edit hw-id
+
+[charfdo_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+charfdo.sys
+
+;-------------- Service installation
+[charfdo_Device.NT.Services]
+AddService = charfdo,%SPSVCINST_ASSOCSERVICE%, charfdo_Service_Inst
+
+; -------------- charfdo driver install sections
+[charfdo_Service_Inst]
+DisplayName    = %charfdo.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\charfdo.sys
+
+;
+;--- charfdo_Device Coinstaller installation ------
+;
+
+[charfdo_Device.NT.CoInstallers]
+AddReg=charfdo_Device_CoInstaller_AddReg
+CopyFiles=charfdo_Device_CoInstaller_CopyFiles
+
+[charfdo_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[charfdo_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[charfdo_Device.NT.Wdf]
+KmdfService =  charfdo, charfdo_wdfsect
+[charfdo_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+DeviceClassName="WDF CharFDO"
+DiskName = "charfdo Installation Disk #1"
+charfdo.DeviceDesc = "charfdo Device"
+charfdo.SVCDESC = "charfdo Service"
