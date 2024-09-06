@@ -1,11 +1,14 @@
 
 #### filter driver.
 
-charfdo 实例的功能是：一次将一个数字（0～9）转换成一个中文（零～九）。
-FilterSample 实例的功能是：一次可接收多个数字（0～9），然后一个一个传递给charfdo，待所有的数字转换完毕后，完成一次操作。
-Test_FilterSample 实例的功能是：下发CharSample_IOCTL_800 IRP到FilterSample处理后传输给FDO;
-								下发CharSample_IOCTL_801 IRP到FilterSample不处理，直接传输给FDO;
-								获取转换后的字符串，并转换大小端。
+- **charfdo 实例的功能是：**
+	- 一次将一个数字（0～9）转换成一个中文（零～九）。
+- **FilterSample 实例的功能是：**
+	- 一次可接收多个数字（0～9），然后一个一个传递给charfdo，待所有的数字转换完毕后，完成一次操作。
+- **Test_FilterSample 实例的功能是：**
+	- 下发CharSample_IOCTL_800 IRP到FilterSample处理后传输给FDO;
+	- 下发CharSample_IOCTL_801 IRP到FilterSample不处理，直接传输给FDO;
+	- 获取转换后的字符串，并转换大小端。
 
 
 #### install.  
