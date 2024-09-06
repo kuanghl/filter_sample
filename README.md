@@ -13,8 +13,10 @@
 
 #### install.  
 
+```sh
 # 微软pnp驱动安装器(nopnp),用于测试程序,设备管理器中可以看到设备安装情况
 hdwwiz.exe # 安装pnp设备: Next --> Advanced --> Next(Show All Devices) --> Have Disk --> Ok
+```
 
 #### test.
 
